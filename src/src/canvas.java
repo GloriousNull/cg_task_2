@@ -27,6 +27,7 @@ public class canvas extends JPanel
 
     public canvas()
     {
+        print_state();
         setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
 
         addKeyListener(new KeyAdapter()
@@ -38,17 +39,22 @@ public class canvas extends JPanel
                     ++mode;
                     if (mode > 2)
                         mode = 0;
-                    System.out.println(mode);
+                    print_state();
+                    repaint();
                 }
                 else
                 if (e.getKeyCode() == KeyEvent.VK_1)
                 {
                     fill = !fill;
+                    print_state();
                     repaint();
                 }
                 else
                 if (e.getKeyCode() == KeyEvent.VK_2)
+                {
                     angle = !angle;
+                    print_state();
+                }
             }
         });
 
@@ -209,6 +215,39 @@ public class canvas extends JPanel
             angle += 360;
 
         return (int)Math.round(angle);
+    }
+
+    private void print_state()
+    {
+        System.out.print("[MODE: ");
+        switch (mode)
+        {
+            case 0:
+                System.out.print("line");
+                break;
+
+            case 1:
+                System.out.print("ellipse; FILLED: ");
+                if (fill)
+                    System.out.print("true");
+                else
+                    System.out.print("false");
+                break;
+
+            case 2:
+                System.out.print("arc; INPUT: ");
+                if (angle)
+                    System.out.print("angles; ");
+                else
+                    System.out.print("coordinates; ");
+                System.out.print("FILLED: ");
+                if (fill)
+                    System.out.print("true");
+                else
+                    System.out.print("false");
+        }
+
+        System.out.println("]");
     }
 
     public void addNotify()
